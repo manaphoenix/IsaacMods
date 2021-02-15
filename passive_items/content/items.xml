@@ -1,0 +1,4 @@
+<items gfxroot="gfx/Items/" version="1">
+	<passive gfx="rock_tumbler.png" description="Gem in the rough" name="Rock Tumbler"/>
+	<passive gfx="scale.png" description="Tip the scales" name="Scale"/>
+</items>

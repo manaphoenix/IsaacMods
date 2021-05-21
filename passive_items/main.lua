@@ -1,127 +1,92 @@
 _G.MorePassiveItems = RegisterMod("More Passive Items", 1)
-local MyMod = _G.MorePassiveItems
+MorePassiveItems.RNG = RNG()
 
 -- init
-local game = Game()
-local destroyTypes = {
-	GridEntityType.GRID_ROCK,
-	GridEntityType.GRID_ROCKB,
-	GridEntityType.GRID_ROCKT,
-	GridEntityType.GRID_ROCK_BOMB,
-	GridEntityType.GRID_ROCK_ALT,
-	GridEntityType.GRID_SPIDERWEB,
-	GridEntityType.GRID_LOCK,
-	GridEntityType.GRID_TNT,
-	GridEntityType.GRID_POOP,
-	GridEntityType.GRID_DOOR,
-	GridEntityType.GRID_ROCK_SS
-}
-local items = {
-	bombs = 0,
-	keys = 0,
-	coins = 0,
-	firstset = true
-}
---local flawless = require("flawlessAPI")
---flawless:init(MyMod)
+	local RNG = RNG()
+-- APIs
+	require("ItemRegistry")
+	require("EIDRegistry")
+-- Items
+	require("Items/Scale.lua")
+	require("Items/RockTumbler.lua")
+	require("Items/Mars.lua")
+	require("Items/Fireflower.lua")
+	require("Items/TestItem.lua")
 
--- collectibles
-local Tumbler = Isaac.GetItemIdByName("Rock Tumbler")
-local Scale = Isaac.GetItemIdByName("Scale")
+-- Sprite Attempt
+local function GetScreenSize() -- By Kilburn himself.
+    local room = Game():GetRoom()
+    local pos = Isaac.WorldToScreen(Vector(0,0)) - room:GetRenderScrollOffset() - Game().ScreenShakeOffset
 
--- utils
-local function IsGridType(ent)
-	for i = 1, #destroyTypes do
-		if (ent == destroyTypes[i]) then
-			return true
-		end
-	end
-	return false
+    local rx = pos.X + 60 * 26 / 40
+    local ry = pos.Y + 140 * (26 / 40)
+
+    return rx*2 + 13*26, ry*2 + 7*26
 end
 
-local function destroyRocks(level)
-	local curroom = level:GetCurrentRoom()
-	local size = curroom:GetGridSize()
-	if not curroom:IsFirstVisit() then return end
+local mysprite = Sprite()
+local testSprite = Sprite()
+local center = Vector(0,0)
+local posx,posy = GetScreenSize()
 
-	for i = 0, size do
-		local ent = curroom:GetGridEntity(i)
-		if (ent ~= nil) then
-			local typ = ent:GetType()
-			if (IsGridType(typ)) then
-				ent:Destroy()
-				ent:Update()
-			end
-		end
-	end
-end
+mysprite:Load("gfx/ui/halo.anm2", true)
+mysprite:Play("Idle")
 
-local function setPickups(player, count)
-	player:AddCoins(-99)
-	player:AddBombs(-99)
-	player:AddKeys(-99)
-	player:AddCoins(count)
-	player:AddBombs(count)
-	player:AddKeys(count)
-	items.bombs = count
-	items.keys = count
-	items.coins = count
-end
+--testSprite:Load("gfx/ui/FrameTest.anm2", true)
+--testSprite:Play("Idle")
 
--- callbacks
-function MyMod:PostPlayerInit(newPlayer)
-	game = Game()
-	level = game:GetLevel()
-	stage = level:GetStage()
-	room = game:GetRoom()
+function MorePassiveItems:RenderLayer()
+	--mysprite:Render(Vector(posx*0.12,posy*0.9),center,center)
+	--testSprite:Render(Vector(posx*0.12,posy*0.9),center,center)
 end
-MyMod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, MyMod.PostPlayerInit)
+MorePassiveItems:AddCallback(ModCallbacks.MC_POST_RENDER, MorePassiveItems.RenderLayer)
 
-function MyMod:NewRoomEntered()
-	for p = 0, game:GetNumPlayers() - 1 do
-		local player = Isaac.GetPlayer(p)
-		
-		if player:HasCollectible(Tumbler) then
-			destroyRocks(game:GetLevel())
-		end
-	end
-end
-MyMod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, MyMod.NewRoomEntered)
+-- [[ Loading ]] --
 
-function MyMod:PlayerUpdate(player)
-	if player:HasCollectible(Scale) then
-		local bombs = player:GetNumBombs()
-		local coins = player:GetNumCoins()
-		local keys = player:GetNumKeys()
-		if items.firstset then
-			local count = 0
-			count = (count < coins and coins) or (count < keys and keys) or bombs
-			setPickups(player, count)
-			items.firstset = false
-		else
-			if bombs ~= items.bombs then
-				setPickups(player, bombs)
-			elseif coins ~= items.coins then
-				setPickups(player, coins)
-			elseif keys ~= items.keys then
-				setPickups(player, keys)
-			end
-		end
-	end
-end
-MyMod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, MyMod.PlayerUpdate)
+
+MorePassiveItems:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_, player)
+--[[
+    local TotPlayers = Isaac.CountEntities(nil, EntityType.ENTITY_PLAYER, -1, -1)
+
+    if TotPlayers == 0 then -- If the run just started
+        if game:GetFrameCount() == 0 then -- not from save
+        else -- from save
+        end
+    end
+]]
+MorePassiveItems.RNG:SetSeed(Game():GetSeeds():GetStartSeed(), 0)
+end)
 
 --[[
-function MyMod:RoomCleared()
+MC_POST_NEW_LEVEL and MC_PRE_GAME_EXIT
+
+function MorePassiveItems:TearFired(tear)
+	local InnerR, InnerG, InnerB = math.random(0, 100)/100, math.random(0, 100)/100, math.random(0, 100)/100
+	local OuterR, OuterG, OuterB = math.random(-255, 255), math.random(-255, 255), math.random(-255, 255)
+
+	local Alpha = 1 -- how see through is the tear? (0 = invis, 1 = completely vis)
+
+	-- note: set Outer to 0,0,0 if you don't want an overlay color
+	-- note2: set Inner to 1, 1, 1 to have a default inner tear color
+	local col = Color(InnerR, InnerG, InnerB, Alpha, OuterR, OuterG, OuterB);
+	tear:SetColor(col, -1, 1, false, false)
+end
+MorePassiveItems:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, MorePassiveItems.TearFired)
+
+local flawless = require("flawlessAPI")
+flawless:init(MorePassiveItems)
+
+function MorePassiveItems:RoomCleared()
 	print("Flawless return: ")
 	print("Was Boss: " .. tostring(flawless.IsBoss))
 	print("Was MiniBoss: " .. tostring(flawless.IsMiniBoss))
 	print("# Of Bosses: " .. flawless.ContainedBosses)
 	print("# Of Enemies: " .. flawless.ContainedEnemies)
 	print("Took Damage: " .. tostring(flawless.TookDamage))
+	print("Boss Id: " .. flawless.BossId)
 	--game:Spawn(type, type's subtype, spawnPos, Momement, Controller, SubType Variant)
 	--game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, room:GetCenterPos(), Vector(0,0), nil, 100)
 end
 
-flawless:AddCallback(MyMod.RoomCleared)
-]]
+flawless:AddCallback(MorePassiveItems.RoomCleared)
+]]--

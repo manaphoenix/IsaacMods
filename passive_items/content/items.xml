@@ -1,4 +1,9 @@
 <items gfxroot="gfx/Items/" version="1">
+	<passive cache="tearcolor" gfx="laidoblade.png" description="laijutsu" name="TestItem"/>
+
 	<passive gfx="rock_tumbler.png" description="Gem in the rough" name="Rock Tumbler"/>
-	<passive gfx="scale.png" description="Tip the scales" name="Scale"/>
+	<passive gfx="scale.png" description="Equivalant Exchange" name="Scale"/>
+	<passive gfx="laidoblade.png" description="laijutsu" name="Katana"/>
+	<passive gfx="mars.png" description="Life is precious, because it ends" name="Blessing of Mars"/>
+	<passive gfx="fireflower.png" description="Hot stuff" name="Spicy Flower"/>
 </items>

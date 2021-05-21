@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <name>Better Rewards</name>
+    <directory>better_rewards</directory>
+    <id>2411185035</id>
+    <description>[h1]About the Repentance Update[/h1]
+This mod will not be updating for Repentance except for breaking changes until things have settled down and it has being kind of decided what is &quot;monotonous content&quot; that you would like/need more of a reason to go to.
+
+[h1]About the mod[/h1]
+Giving better rewards to otherwise monotonous content. Specifically Boss Rush, Hush, and The Void.
+[h1]Pass 1[/h1]
+[list]
+    [*][b]Boss Rush[/b]
+    [list]
+		[*][b]Modded[/b] - +1 HP (Attempted)
+		[*][b]Regular Characters[/b] - +1 HP
+		[*][b]Soul Heart Only Characters[/b] - +2 Soul hearts
+		[*][b]Black Heart Only Characters[/b] - +2 Black hearts 
+		[*][b]Forgotten[/b] - +1 Bone heart
+		[*][b]Tainted Lost[/b] - +3 Flies
+		[*][b]Lost - Blanket[/b]
+	[/list]
+    [*][b]Hush[/b] - Random Passive Treasure Room Item
+    [*][b]The Void[/b] - Random Passive Treasure Room Item OF Quality 3 or 4
+	[*][b]Mega Satan[/b] - Joker Card
+	[*][b]Full Key[/b] - Start with Blue Map, Treasure Map, or Compass
+[/list]
+
+[b]New additions[/b]
+[list]
+	[*][b]Full Key[/b] - Start with Blue Map, Treasure Map, or Compass
+	[*][b]Mega Satan[/b] - Start with Joker Card
+[/list]
+
+[b]New Features[/b]
+Anything that gives an Item (Collectible or Pickup) will instead spawn in your start room for you to choose if you want to take it.
+[b]Spawn Locations[/b]
+[list]
+	[*][b]Boss Rush[/b] - Top Left Corner for the Blanket for [i]The Lost[/i]
+	[*][b]Hush[/b] - Top Right Corner
+	[*][b]Void[/b] - Bottom Left Corner
+	[*][b]Key[/b] - Bottom Right Corner
+	[*][b]Satan[/b] - Center of Room
+[/list]
+
+Sounds have been removed in favor of this way of handling it. 
+Will be looked at again if necessary.
+
+[b]NOTES:[/b]
+[list]
+	[*]I will be separating AB+ and Rept in the near future when Rept fixes its sound issue in the API. It will still be the same mod that you subscribe to, just means different things will happen depending if you subscribe to it with Rept or AB+
+    [*]The reward(s) are only given if the previous run was won.
+[/list]</description>
+    <version>1.10</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Floors"/>
+    <tag id="Bosses"/>
+</metadata>

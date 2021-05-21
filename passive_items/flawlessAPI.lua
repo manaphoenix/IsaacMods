@@ -7,11 +7,16 @@ Included:
 	- TookDamage
 ]]--
 
+local boss = {
+	LarryJr = 2,
+}
+
 local flawless = {
 	IsBoss = false,
 	IsMiniBoss = false,
 	ContainedBosses = 0,
 	ContainedEnemies = 0,
+	Bosses = {}
 	TookDamage = false
 }
 
@@ -21,6 +26,21 @@ local callbacks = {}
 
 function flawless:AddCallback(func)
 	table.insert(callbacks, func)
+end
+
+local function GetBosses()
+	flawless.Bosses = {}
+	if (flawless.IsBoss) or (flawless.IsMiniBoss) then
+	  	local ents = Isaac.GetRoomEntities()
+		for _, ent in pairs(ents) do
+			if (ent ~= nil) then
+				local id = ent:GetBossID()
+				if (id ~= 0) then
+					table.insert(flawless.Bosses, id)
+				end
+			end
+		end
+	end
 end
 
 function flawless:init(mod)
@@ -37,6 +57,7 @@ function flawless:init(mod)
 		flawless.ContainedBosses = room:GetAliveBossesCount()
 		flawless.ContainedEnemies = room:GetAliveEnemiesCount()
 		flawless.TookDamage = false
+		GetBosses()
 		isready = true
 	end
 	mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.ResetInfo)

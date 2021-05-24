@@ -19,6 +19,7 @@ Giving better rewards to otherwise monotonous content. Specifically Boss Rush, H
 		[*][b]Forgotten[/b] - +1 Bone heart
 		[*][b]Tainted Lost[/b] - +3 Flies
 		[*][b]Lost - Blanket[/b]
+[*][b]Tainted Keeper[/b] - +3 Spiders
 	[/list]
     [*][b]Hush[/b] - Random Passive Treasure Room Item
     [*][b]The Void[/b] - Random Passive Treasure Room Item OF Quality 3 or 4
@@ -51,7 +52,7 @@ Will be looked at again if necessary.
 	[*]I will be separating AB+ and Rept in the near future when Rept fixes its sound issue in the API. It will still be the same mod that you subscribe to, just means different things will happen depending if you subscribe to it with Rept or AB+
     [*]The reward(s) are only given if the previous run was won.
 [/list]</description>
-    <version>1.10</version>
+    <version>1.11</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Floors"/>

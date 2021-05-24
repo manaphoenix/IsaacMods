@@ -8,10 +8,9 @@ local chars = {
   BlackHearts = PlayerType.PLAYER_JUDAS_B,
   BoneHearts = PlayerType.PLAYER_THEFORGOTTEN,
   Flies = PlayerType.PLAYER_THELOST_B,
+  Spiders = PlayerType.PLAYER_KEEPER_B,
   Blanket = PlayerType.PLAYER_THELOST
 }
-
---TODO: Added a reward for tainted keeper
 
 local function GiveReward(player)
   local type = player:GetPlayerType()
@@ -24,6 +23,10 @@ local function GiveReward(player)
     player:AddBlueFlies ( 3, player.Position, nil)
   elseif (type == chars.Blanket) then
     return CollectibleType.COLLECTIBLE_BLANKET
+  elseif (type == chars.Spiders) then
+    for i = 1, 3 do
+      player:AddBlueSpider(player.Position)
+    end
   else
     for i = 1, #chars.SoulHearts do
       if (type == chars.SoulHearts[i]) then

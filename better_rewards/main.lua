@@ -116,7 +116,7 @@ BetterRewards:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, isConti
   GridPositions.BottomRight = room:GetGridPosition(118)
 
   if (not isContin) then
-    local players = Isaac.FindByType(EntityType.ENTITY_PLAYER)
+    local players = Isaac.FindByType(EntityType.ENTITY_PLAYER, -1, -1, false, false)
     for i, v in pairs(players) do
       GiveRewards(v:ToPlayer())
     end

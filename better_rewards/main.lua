@@ -23,6 +23,7 @@ local room = Game:GetRoom()
 local pool = Game:GetItemPool()
 local config = Isaac.GetItemConfig()
 local CanSave = false
+local seeds = Game:GetSeeds()
 local Zero = Vector.Zero or Vector(0, 0)
 
 -- [[ Helper Funcs ]] --
@@ -35,14 +36,17 @@ local function GetRoomItem(defaultPool, AllowActives, MinQuality)
 
   local itemType = pool:GetPoolForRoom(room:GetType(), room:GetAwardSeed())
   itemType = itemType > - 1 and itemType or defaultPool
-  local collectible = pool:GetCollectible(itemType)
+  local collectible = pool:GetCollectible(itemType, false, seeds:GetStartSeed())
 
   if (not AllowActives or MinQuality > 0) then
     local itemConfig = config:GetCollectible(collectible)
     local active = (AllowActives == true) and true or itemConfig.Type == ItemType.ITEM_PASSIVE
-    local quality = MinQuality == 0 and true or itemConfig.Quality >= MinQuality
+    local quliity = true
+    if REPENTANCE then
+      quality = MinQuality == 0 and true or itemConfig.Quality >= MinQuality
+    end
     while (not quality and not active) do
-      collectible = pool:GetCollectible(itemType)
+      collectible = pool:GetCollectible(itemType, false, seeds:GetStartSeed())
       itemConfig = config:GetCollectible(collectible)
       active = (AllowActives == true) and true or itemConfig.Type == ItemType.ITEM_PASSIVE
       quality = MinQuality == 0 and true or itemConfig.Quality >= MinQuality
@@ -116,7 +120,7 @@ BetterRewards:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, isConti
   GridPositions.BottomRight = room:GetGridPosition(118)
 
   if (not isContin) then
-    local players = Isaac.FindByType(EntityType.ENTITY_PLAYER, -1, -1, false, false)
+    local players = Isaac.FindByType(EntityType.ENTITY_PLAYER, - 1, - 1, false, false)
     for i, v in pairs(players) do
       GiveRewards(v:ToPlayer())
     end
@@ -131,6 +135,10 @@ end)
 
 BetterRewards:AddCallback(ModCallbacks.MC_EXECUTE_CMD, function(_, command, args)
   if (command == "BRReward") then
+  GridPositions.TopLeft = room:GetGridPosition(16)
+  GridPositions.TopRight = room:GetGridPosition(28)
+  GridPositions.BottomLeft = room:GetGridPosition(106)
+  GridPositions.BottomRight = room:GetGridPosition(118)
   for i, v in pairs(state) do
     state[i] = true
   end

@@ -52,7 +52,7 @@ Will be looked at again if necessary.
 	[*]I will be separating AB+ and Rept in the near future when Rept fixes its sound issue in the API. It will still be the same mod that you subscribe to, just means different things will happen depending if you subscribe to it with Rept or AB+
     [*]The reward(s) are only given if the previous run was won.
 [/list]</description>
-    <version>1.11</version>
+    <version>1.13</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Floors"/>

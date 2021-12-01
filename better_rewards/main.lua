@@ -36,17 +36,17 @@ local function GetRoomItem(defaultPool, AllowActives, MinQuality)
 
   local itemType = pool:GetPoolForRoom(room:GetType(), room:GetAwardSeed())
   itemType = itemType > - 1 and itemType or defaultPool
-  local collectible = pool:GetCollectible(itemType, false, seeds:GetStartSeed())
+  local collectible = pool:GetCollectible(itemType, false)
 
   if (not AllowActives or MinQuality > 0) then
     local itemConfig = config:GetCollectible(collectible)
     local active = (AllowActives == true) and true or itemConfig.Type == ItemType.ITEM_PASSIVE
-    local quliity = true
+    local quality = true
     if REPENTANCE then
       quality = MinQuality == 0 and true or itemConfig.Quality >= MinQuality
     end
-    while (not quality and not active) do
-      collectible = pool:GetCollectible(itemType, false, seeds:GetStartSeed())
+    while (not quality or not active) do
+      collectible = pool:GetCollectible(itemType, false)
       itemConfig = config:GetCollectible(collectible)
       active = (AllowActives == true) and true or itemConfig.Type == ItemType.ITEM_PASSIVE
       quality = MinQuality == 0 and true or itemConfig.Quality >= MinQuality

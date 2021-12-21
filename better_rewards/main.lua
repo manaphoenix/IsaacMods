@@ -63,7 +63,6 @@ local function SaveGame()
 end
 
 local function LoadGame()
-  local load
   if BetterRewards:HasData() then
     local st = json.decode(BetterRewards:LoadData())
     if (st.DidSatan == nil) then
